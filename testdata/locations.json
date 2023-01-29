@@ -1,0 +1,24 @@
+{
+    "Locations": {
+        "Location": [
+            {
+                "elevation": "50.0",
+                "id": "14",
+                "latitude": "54.9375",
+                "longitude": "-2.8092",
+                "name": "Carlisle Airport",
+                "region": "nw",
+                "unitaryAuthArea": "Cumbria"
+            },
+            {
+                "elevation": "22.0",
+                "id": "26",
+                "latitude": "53.3336",
+                "longitude": "-2.85",
+                "name": "Liverpool John Lennon Airport",
+                "region": "nw",
+                "unitaryAuthArea": "Merseyside"
+            }
+        ]
+    }
+}

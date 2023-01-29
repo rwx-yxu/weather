@@ -3,6 +3,7 @@ module github.com/rwx-yxu/weather
 go 1.18
 
 require (
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
 	github.com/rwxrob/bonzai v0.20.10 // indirect
 	github.com/rwxrob/compcmd v0.3.0 // indirect
