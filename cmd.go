@@ -120,9 +120,19 @@ var siteSetCmd = &Z.Cmd{
 				if err != nil {
 					return err
 				}
-				err = Z.Vars.Set("region", s.Region)
+
+				regions, err := GetRegionList(APIKey)
 				if err != nil {
 					return err
+				}
+
+				for _, r := range regions {
+					if r.Name == s.Region {
+						err := Z.Vars.Set("regionID", r.Id)
+						if err != nil {
+							return err
+						}
+					}
 				}
 				return nil
 			}
