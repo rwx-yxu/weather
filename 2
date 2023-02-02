@@ -68,14 +68,14 @@ func TestParseSiteForecastResponse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var want = weather.SiteForecast{
-		weather.Day{
-			Temp:        "9",
-			Description: "Overcast",
+	var want = []weather.SiteForecast{
+		weather.SiteForecast{
+			DayTemp:   "9",
+			NightTemp: "6",
 		},
-		weather.Night{
-			Temp:        "6",
-			Description: "Overcast",
+		weather.SiteForecast{
+			DayTemp:   "8",
+			NightTemp: "5",
 		},
 	}
 	got, err := weather.ParseForecastResponse(data)

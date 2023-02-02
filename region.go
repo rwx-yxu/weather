@@ -54,7 +54,7 @@ func GetRegionList(key string) ([]Region, error) {
 }
 
 func (c *Client) RegionReq() ([]Region, error) {
-	URL := c.FormatURL("regionlist", 0)
+	URL := c.FormatURL(RegionList, 0)
 	resp, err := c.HTTPClient.Get(URL)
 	if err != nil {
 		return []Region{}, fmt.Errorf("region GET URL error:%v", err)

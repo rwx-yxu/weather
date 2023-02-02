@@ -1,0 +1,160 @@
+{
+    "SiteRep": {
+        "Wx": {
+            "Param": [
+                {
+                    "name": "FDm",
+                    "units": "C",
+                    "$": "Feels Like Day Maximum Temperature"
+                },
+                {
+                    "name": "FNm",
+                    "units": "C",
+                    "$": "Feels Like Night Minimum Temperature"
+                },
+                {
+                    "name": "Dm",
+                    "units": "C",
+                    "$": "Day Maximum Temperature"
+                },
+                {
+                    "name": "Nm",
+                    "units": "C",
+                    "$": "Night Minimum Temperature"
+                },
+                {
+                    "name": "Gn",
+                    "units": "mph",
+                    "$": "Wind Gust Noon"
+                },
+                {
+                    "name": "Gm",
+                    "units": "mph",
+                    "$": "Wind Gust Midnight"
+                },
+                {
+                    "name": "Hn",
+                    "units": "%",
+                    "$": "Screen Relative Humidity Noon"
+                },
+                {
+                    "name": "Hm",
+                    "units": "%",
+                    "$": "Screen Relative Humidity Midnight"
+                },
+                {
+                    "name": "V",
+                    "units": "",
+                    "$": "Visibility"
+                },
+                {
+                    "name": "D",
+                    "units": "compass",
+                    "$": "Wind Direction"
+                },
+                {
+                    "name": "S",
+                    "units": "mph",
+                    "$": "Wind Speed"
+                },
+                {
+                    "name": "U",
+                    "units": "",
+                    "$": "Max UV Index"
+                },
+                {
+                    "name": "W",
+                    "units": "",
+                    "$": "Weather Type"
+                },
+                {
+                    "name": "PPd",
+                    "units": "%",
+                    "$": "Precipitation Probability Day"
+                },
+                {
+                    "name": "PPn",
+                    "units": "%",
+                    "$": "Precipitation Probability Night"
+                }
+            ]
+        },
+        "DV": {
+            "dataDate": "2023-02-02T13:00:00Z",
+            "type": "Forecast",
+            "Location": {
+                "i": "350473",
+                "lat": "53.5207",
+                "lon": "-2.2131",
+                "name": "BLACKLEY",
+                "country": "ENGLAND",
+                "continent": "EUROPE",
+                "elevation": "56.0",
+                "Period": [
+                    {
+                        "type": "Day",
+                        "value": "2023-02-02Z",
+                        "Rep": [
+                            {
+                                "D": "WSW",
+                                "Gn": "25",
+                                "Hn": "80",
+                                "PPd": "24",
+                                "S": "9",
+                                "V": "GO",
+                                "Dm": "10",
+                                "FDm": "9",
+                                "W": "8",
+                                "U": "1",
+                                "$": "Day"
+                            },
+                            {
+                                "D": "WSW",
+                                "Gm": "31",
+                                "Hm": "78",
+                                "PPn": "13",
+                                "S": "16",
+                                "V": "VG",
+                                "Nm": "9",
+                                "FNm": "6",
+                                "W": "8",
+                                "$": "Night"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Day",
+                        "value": "2023-02-03Z",
+                        "Rep": [
+                            {
+                                "D": "W",
+                                "Gn": "25",
+                                "Hn": "83",
+                                "PPd": "16",
+                                "S": "11",
+                                "V": "GO",
+                                "Dm": "11",
+                                "FDm": "8",
+                                "W": "8",
+                                "U": "1",
+                                "$": "Day"
+                            },
+                            {
+                                "D": "SSW",
+                                "Gm": "9",
+                                "Hm": "92",
+                                "PPn": "11",
+                                "S": "4",
+                                "V": "GO",
+                                "Nm": "7",
+                                "FNm": "5",
+                                "W": "7",
+                                "$": "Night"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}
