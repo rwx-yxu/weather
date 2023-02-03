@@ -186,7 +186,7 @@ func GetSiteList(key string) ([]Site, error) {
 }
 
 func (c *Client) SiteReq() ([]Site, error) {
-	URL := c.FormatURL(SiteList, 0)
+	URL := c.FormatURL(SiteList, "")
 	resp, err := c.HTTPClient.Get(URL)
 	if err != nil {
 		return []Site{}, err
@@ -206,4 +206,38 @@ func (c *Client) SiteReq() ([]Site, error) {
 		return []Site{}, err
 	}
 	return sites, nil
+}
+
+func GetTodayForecast(key, siteID string) (SiteForecast, error) {
+	c := NewClient(key)
+	forecast, err := c.ForecastReq(siteID)
+	if err != nil {
+		return SiteForecast{}, err
+	}
+	return forecast, err
+}
+
+func (c *Client) ForecastReq(id string) (SiteForecast, error) {
+	URL := c.FormatURL(ForecastTodaySite, id)
+	resp, error := c.HTTPClient.Get(URL)
+	if error != nil {
+		return SiteForecast{}, fmt.Errorf("unable to make forecast request: %w", error)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return SiteForecast{}, fmt.Errorf("unexpected response status %q", resp.Status)
+	}
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return SiteForecast{}, err
+	}
+
+	forecast, err := ParseForecastResponse(data)
+	if err != nil {
+		return SiteForecast{}, err
+	}
+
+	return forecast, nil
 }

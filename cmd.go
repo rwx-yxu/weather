@@ -51,8 +51,9 @@ var nowCmd = &Z.Cmd{
 var sitesCmd = &Z.Cmd{
 	Name:     `site`,
 	Summary:  `site commands that will output met office sites`,
-	Commands: []*Z.Cmd{help.Cmd, siteListCmd, siteFindCmd, siteSetCmd},
+	Commands: []*Z.Cmd{help.Cmd, siteListCmd, siteFindCmd, siteSetCmd, siteForecastCmd},
 }
+
 var siteListCmd = &Z.Cmd{
 	Name:     `list`,
 	Summary:  `prints all met office site locations to standard output (default)`,
@@ -138,5 +139,28 @@ var siteSetCmd = &Z.Cmd{
 			}
 		}
 		return errors.New("site is not in list. Please use weather site list to find list all sites")
+	},
+}
+
+var siteForecastCmd = &Z.Cmd{
+	Name:     `forecast`,
+	Summary:  `get the met office forecast for today using the set location id.`,
+	Commands: []*Z.Cmd{help.Cmd},
+	Call: func(x *Z.Cmd, args ...string) error {
+		APIKey := Z.Vars.Get(`.apikey`)
+		if APIKey == "" {
+			return errors.New("API Key not set. Please use the command 'weather var set                apikey'")
+		}
+
+		siteID := Z.Vars.Get(`locationID`)
+		if siteID == "" {
+			return errors.New("Site id is not set. Please use the command 'weather site set LOCATION' first. Or, use the command 'weather site find LOCATION' to find a specific location")
+		}
+		forecast, err := GetTodayForecast(APIKey, siteID)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Day %s°C - %s | Night %s °C - %s\n", forecast.Day.Temp, forecast.Day.Description, forecast.Night.Temp, forecast.Night.Description)
+		return nil
 	},
 }
