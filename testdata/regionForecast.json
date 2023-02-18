@@ -1,0 +1,53 @@
+{
+   "RegionalFcst":{
+      "createdOn":"2023-02-08T01:37:59",
+      "issuedAt":"2023-02-08T04:00:00",
+      "regionId":"nw",
+      "FcstPeriods":{
+         "Period":[
+            {
+               "id":"day1to2",
+               "Paragraph":[
+                  {
+                     "title":"Headline:",
+                     "$":"Patchy fog clearing, then dry and bright for most."
+                  },
+                  {
+                     "title":"Today:",
+                     "$":"Mostly cloudy in Cumbria at first with the odd spot of light rain. Elsewhere, patchy mist and fog clearing to leave a dry day with bright or sunny spells. Turning breezier than of late. Maximum Temperature 9C."
+                  },
+                  {
+                     "title":"Tonight:",
+                     "$":"Cloud thickening this evening with a band of patchy rain moving south across the region. Skies clearing overnight, allowing a patchy frost to develop. Winds becoming generally light. Minimum Temperature 1C."
+                  },
+                  {
+                     "title":"Thursday:",
+                     "$":"After a frosty start in places, it will be a dry and fine day with sunny periods. Brisk westerly winds, especially in northern areas. Maximum Temperature 8C."
+                  }
+               ]
+            },
+            {
+               "id":"day3to5",
+               "Paragraph":{
+                  "title":"Outlook for Friday to Sunday:",
+                  "$":"Staying generally dry albeit often cloudy, with perhaps a few spots of drizzle at times. Occasional brighter periods are likely. Turning gradually milder with a reducing likelihood of frosts."
+               }
+            },
+            {
+               "id":"day6to15",
+               "Paragraph":{
+                  "title":"UK Outlook for Monday 13 Feb 2023 to Wednesday 22 Feb 2023:",
+                  "$":"Monday is expected to be a largely dry day. Some patchy fog and frost initially, but this clearing to broken cloud, allowing sunny spells to develop across much of the UK. However, some patchy rain likely along coasts and hills in the northwest. Into mid-week, the south and southeast are likely to remain dry, but the far north and west probably seeing rain at times, which may extend a little further south and east with time. Further into the period, a transition away from higher pressure in the south allows for more unsettled conditions to become widespread across the UK. Temperatures generally mild, although potentially cold in the south overnight, especially earlier in the period."
+               }
+            },
+            {
+               "id":"day16to30",
+               "Paragraph":{
+                  "title":"UK Outlook for Wednesday 22 Feb 2023 to Wednesday 8 Mar 2023:",
+                  "$":"Generally changeable weather conditions with near or above average temperatures across the UK as a whole until late February. Bands of rain and strong winds are expected, especially in the northwest, with a risk of some wintry showers in the intervening colder brighter interludes between these frontal systems. Some of these frontal systems perhaps spreading further to the southeast, although much of the south and southeast will likely be relatively drier. Confidence in the forecast around the turn of the month becomes much lower, and whilst the more likely scenario is one of a continuation of similar conditions experienced through the latter half of February, there is a low probability of some much colder weather developing."
+               }
+            }
+         ]
+      }
+   }
+}

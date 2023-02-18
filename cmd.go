@@ -149,7 +149,7 @@ var siteForecastCmd = &Z.Cmd{
 	Call: func(x *Z.Cmd, args ...string) error {
 		APIKey := Z.Vars.Get(`.apikey`)
 		if APIKey == "" {
-			return errors.New("API Key not set. Please use the command 'weather var set                apikey'")
+			return errors.New("API Key not set. Please use the command 'weather var set apikey'")
 		}
 
 		siteID := Z.Vars.Get(`locationID`)
@@ -161,6 +161,26 @@ var siteForecastCmd = &Z.Cmd{
 			return err
 		}
 		fmt.Printf("Day %s°C - %s | Night %s °C - %s\n", forecast.Day.Temp, forecast.Day.Description, forecast.Night.Temp, forecast.Night.Description)
+
+		regionID := Z.Vars.Get(`regionID`)
+		if siteID == "" {
+			return errors.New("Region id is not set. Please use the command 'weather site set LOCATION' first. Or, use the command 'weather site find LOCATION' to find a specific location")
+		}
+		regionForecast, err := GetRegionForecast(APIKey, regionID)
+		if err != nil {
+			return err
+		}
+		if len(regionForecast) == 0 {
+			return errors.New("No forecasts found for region")
+		}
+
+		for _, f := range regionForecast {
+			if f.Title != "Headline:" {
+				fmt.Printf("%v\n\n", f.Content)
+				continue
+			}
+			fmt.Printf("%v %v\n", f.Title, f.Content)
+		}
 		return nil
 	},
 }
