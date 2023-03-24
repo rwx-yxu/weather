@@ -1,10 +1,12 @@
-package weather
+package region
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/rwx-yxu/weather/app"
 )
 
 type Region struct {
@@ -12,7 +14,7 @@ type Region struct {
 	Name string
 }
 
-type RegionListResp struct {
+type ListResp struct {
 	Locations struct {
 		Location []struct {
 			Id   string `json:"@id"`
@@ -20,22 +22,6 @@ type RegionListResp struct {
 		} `json:"Location"`
 	} `json:"Locations"`
 }
-
-/*
-type RegionForecastResp struct {
-	Forecast struct {
-		FPeriods struct {
-			Periods []struct {
-				id        string `json:"id"`
-				Paragraph []struct {
-					Title   string `json:"title"`
-					Content string `json:"$"`
-				} `json:"Paragraph"`
-			} `json:"Period"`
-		} `json:"FcstPeriods"`
-	} `json:"RegionalFcst"`
-}
-*/
 
 type RegionalFcst struct {
 	CreatedOn   string      `json:"createdOn"`
@@ -63,8 +49,8 @@ type RegionForecast struct {
 	Content string
 }
 
-func ParseRegionResponse(data []byte) ([]Region, error) {
-	var resp RegionListResp
+func ParseResponse(data []byte) ([]Region, error) {
+	var resp ListResp
 	err := json.Unmarshal(data, &resp)
 	if err != nil {
 		return []Region{}, fmt.Errorf("invalid API response %q: %w", data, err)
@@ -108,18 +94,18 @@ func ParseRegionForecastResponse(data []byte) ([]RegionForecast, error) {
 	return forecasts, nil
 }
 
-func GetRegionList(key string) ([]Region, error) {
-	c := NewClient(key)
+func GetList(key string) ([]Region, error) {
+	c := app.NewClient(key)
 
-	regions, err := c.RegionReq()
+	regions, err := RegionReq(c)
 	if err != nil {
 		return []Region{}, err
 	}
 	return regions, err
 }
 
-func (c *Client) RegionReq() ([]Region, error) {
-	URL := c.FormatURL(RegionList, "")
+func RegionReq(c *app.Client) ([]Region, error) {
+	URL := c.FormatURL(app.RegionList, "")
 	resp, err := c.HTTPClient.Get(URL)
 	if err != nil {
 		return []Region{}, fmt.Errorf("region GET URL error:%v", err)
@@ -134,25 +120,25 @@ func (c *Client) RegionReq() ([]Region, error) {
 	if err != nil {
 		return []Region{}, err
 	}
-	regions, err := ParseRegionResponse(data)
+	regions, err := ParseResponse(data)
 	if err != nil {
 		return []Region{}, err
 	}
 	return regions, nil
 }
 
-func GetRegionForecast(key, id string) ([]RegionForecast, error) {
-	c := NewClient(key)
+func GetForecast(key, id string) ([]RegionForecast, error) {
+	c := app.NewClient(key)
 
-	rf, err := c.RegionForecastReq(id)
+	rf, err := ForecastReq(id, c)
 	if err != nil {
 		return []RegionForecast{}, err
 	}
 	return rf, err
 }
 
-func (c *Client) RegionForecastReq(id string) ([]RegionForecast, error) {
-	URL := c.FormatURL(ForecastTodayRegion, id)
+func ForecastReq(id string, c *app.Client) ([]RegionForecast, error) {
+	URL := c.FormatURL(app.ForecastTodayRegion, id)
 	resp, err := c.HTTPClient.Get(URL)
 	if err != nil {
 		return []RegionForecast{}, fmt.Errorf("region GET URL error:%v", err)

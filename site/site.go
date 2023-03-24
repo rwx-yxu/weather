@@ -1,10 +1,12 @@
-package weather
+package site
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/rwx-yxu/weather/app"
 )
 
 type Site struct {
@@ -13,7 +15,7 @@ type Site struct {
 	Region string
 	Area   string
 }
-type SiteForecast struct {
+type Forecast struct {
 	Day
 	Night
 }
@@ -46,7 +48,7 @@ type ForecastResp struct {
 	} `json:"SiteRep"`
 }
 
-type SiteListResp struct {
+type ListResp struct {
 	Locations struct {
 		Location []struct {
 			Id              string
@@ -57,8 +59,8 @@ type SiteListResp struct {
 	}
 }
 
-func ParseSiteResponse(data []byte) ([]Site, error) {
-	var resp SiteListResp
+func ParseResponse(data []byte) ([]Site, error) {
+	var resp ListResp
 	err := json.Unmarshal(data, &resp)
 	if err != nil {
 		return []Site{}, fmt.Errorf("invalid API response %q: %w", data, err)
@@ -81,16 +83,16 @@ func ParseSiteResponse(data []byte) ([]Site, error) {
 	return sites, nil
 }
 
-func ParseForecastResponse(data []byte) (SiteForecast, error) {
+func ParseForecastResponse(data []byte) (Forecast, error) {
 	var resp ForecastResp
 	err := json.Unmarshal(data, &resp)
 	if err != nil {
-		return SiteForecast{}, fmt.Errorf("invalid API response %q: %w", data, err)
+		return Forecast{}, fmt.Errorf("invalid API response %q: %w", data, err)
 	}
 	if len(resp.SiteRep.DV.Location.Period) < 1 {
-		return SiteForecast{}, fmt.Errorf("invalid API response %s: want at least one forecast period", data)
+		return Forecast{}, fmt.Errorf("invalid API response %s: want at least one forecast period", data)
 	}
-	var forecast = SiteForecast{}
+	var forecast = Forecast{}
 	for _, f := range resp.SiteRep.DV.Location.Period[0].Rep {
 		if f.Period == "Day" {
 			forecast.Day.Temp = f.DayTemp
@@ -175,18 +177,18 @@ func ValueOfWeather(val string) string {
 	}
 }
 
-func GetSiteList(key string) ([]Site, error) {
-	c := NewClient(key)
+func GetList(key string) ([]Site, error) {
+	c := app.NewClient(key)
 
-	sites, err := c.SiteReq()
+	sites, err := SiteReq(c)
 	if err != nil {
 		return []Site{}, err
 	}
 	return sites, err
 }
 
-func (c *Client) SiteReq() ([]Site, error) {
-	URL := c.FormatURL(SiteList, "")
+func SiteReq(c *app.Client) ([]Site, error) {
+	URL := c.FormatURL(app.SiteList, "")
 	resp, err := c.HTTPClient.Get(URL)
 	if err != nil {
 		return []Site{}, err
@@ -201,42 +203,42 @@ func (c *Client) SiteReq() ([]Site, error) {
 	if err != nil {
 		return []Site{}, err
 	}
-	sites, err := ParseSiteResponse(data)
+	sites, err := ParseResponse(data)
 	if err != nil {
 		return []Site{}, err
 	}
 	return sites, nil
 }
 
-func GetTodayForecast(key, siteID string) (SiteForecast, error) {
-	c := NewClient(key)
-	forecast, err := c.ForecastReq(siteID)
+func GetTodayForecast(key, siteID string) (Forecast, error) {
+	c := app.NewClient(key)
+	forecast, err := ForecastReq(siteID, c)
 	if err != nil {
-		return SiteForecast{}, err
+		return Forecast{}, err
 	}
 	return forecast, err
 }
 
-func (c *Client) ForecastReq(id string) (SiteForecast, error) {
-	URL := c.FormatURL(ForecastTodaySite, id)
+func ForecastReq(id string, c *app.Client) (Forecast, error) {
+	URL := c.FormatURL(app.ForecastTodaySite, id)
 	resp, error := c.HTTPClient.Get(URL)
 	if error != nil {
-		return SiteForecast{}, fmt.Errorf("unable to make forecast request: %w", error)
+		return Forecast{}, fmt.Errorf("unable to make forecast request: %w", error)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return SiteForecast{}, fmt.Errorf("unexpected response status %q", resp.Status)
+		return Forecast{}, fmt.Errorf("unexpected response status %q", resp.Status)
 	}
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return SiteForecast{}, err
+		return Forecast{}, err
 	}
 
 	forecast, err := ParseForecastResponse(data)
 	if err != nil {
-		return SiteForecast{}, err
+		return Forecast{}, err
 	}
 
 	return forecast, nil

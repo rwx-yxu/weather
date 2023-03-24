@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/rwx-yxu/weather/region"
+	"github.com/rwx-yxu/weather/site"
 	Z "github.com/rwxrob/bonzai/z"
 	"github.com/rwxrob/help"
 	"github.com/rwxrob/vars"
@@ -64,7 +66,7 @@ var siteListCmd = &Z.Cmd{
 			return errors.New("API Key not set. Please use the command 'weather var set apikey'")
 		}
 
-		sites, err := GetSiteList(APIKey)
+		sites, err := site.GetList(APIKey)
 		if err != nil {
 			return err
 		}
@@ -86,7 +88,7 @@ var siteFindCmd = &Z.Cmd{
 			return errors.New("API Key not set. Please use the command 'weather var set         apikey'")
 		}
 
-		sites, err := GetSiteList(APIKey)
+		sites, err := site.GetList(APIKey)
 		if err != nil {
 			return err
 		}
@@ -111,7 +113,7 @@ var siteSetCmd = &Z.Cmd{
 			return errors.New("API Key not set. Please use the command 'weather var set         apikey'")
 		}
 
-		sites, err := GetSiteList(APIKey)
+		sites, err := site.GetList(APIKey)
 		if err != nil {
 			return err
 		}
@@ -122,7 +124,7 @@ var siteSetCmd = &Z.Cmd{
 					return err
 				}
 
-				regions, err := GetRegionList(APIKey)
+				regions, err := region.GetList(APIKey)
 				if err != nil {
 					return err
 				}
@@ -154,9 +156,9 @@ var siteForecastCmd = &Z.Cmd{
 
 		siteID := Z.Vars.Get(`locationID`)
 		if siteID == "" {
-			return errors.New("Site id is not set. Please use the command 'weather site set LOCATION' first. Or, use the command 'weather site find LOCATION' to find a specific location")
+			return errors.New("site id is not set. Please use the command 'weather site set LOCATION' first. Or, use the command 'weather site find LOCATION' to find a specific location")
 		}
-		forecast, err := GetTodayForecast(APIKey, siteID)
+		forecast, err := site.GetTodayForecast(APIKey, siteID)
 		if err != nil {
 			return err
 		}
@@ -164,14 +166,14 @@ var siteForecastCmd = &Z.Cmd{
 
 		regionID := Z.Vars.Get(`regionID`)
 		if siteID == "" {
-			return errors.New("Region id is not set. Please use the command 'weather site set LOCATION' first. Or, use the command 'weather site find LOCATION' to find a specific location")
+			return errors.New("region id is not set. Please use the command 'weather site set LOCATION' first. Or, use the command 'weather site find LOCATION' to find a specific location")
 		}
-		regionForecast, err := GetRegionForecast(APIKey, regionID)
+		regionForecast, err := region.GetForecast(APIKey, regionID)
 		if err != nil {
 			return err
 		}
 		if len(regionForecast) == 0 {
-			return errors.New("No forecasts found for region")
+			return errors.New("no forecasts found for region")
 		}
 
 		for _, f := range regionForecast {

@@ -1,11 +1,12 @@
-package weather_test
+package app_test
 
 import (
 	"os"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/rwx-yxu/weather"
+	"github.com/rwx-yxu/weather/region"
+	"github.com/rwx-yxu/weather/site"
 )
 
 func TestParseSiteResponse(t *testing.T) {
@@ -14,21 +15,21 @@ func TestParseSiteResponse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var want = []weather.Site{
-		weather.Site{
+	var want = []site.Site{
+		{
 			Id:     "14",
 			Name:   "Carlisle Airport",
 			Region: "nw",
 			Area:   "Cumbria",
 		},
-		weather.Site{
+		{
 			Id:     "26",
 			Name:   "Liverpool John Lennon Airport",
 			Region: "nw",
 			Area:   "Merseyside",
 		},
 	}
-	got, err := weather.ParseSiteResponse(data)
+	got, err := site.ParseResponse(data)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,17 +44,17 @@ func TestParseRegionResponse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var want = []weather.Region{
-		weather.Region{
+	var want = []region.Region{
+		{
 			Id:   "500",
 			Name: "os",
 		},
-		weather.Region{
+		{
 			Id:   "505",
 			Name: "dg",
 		},
 	}
-	got, err := weather.ParseRegionResponse(data)
+	got, err := region.ParseResponse(data)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,17 +69,17 @@ func TestParseSiteForecastResponse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var want = weather.SiteForecast{
-		weather.Day{
+	var want = site.Forecast{
+		site.Day{
 			Temp:        "9",
 			Description: "Overcast",
 		},
-		weather.Night{
+		site.Night{
 			Temp:        "6",
 			Description: "Overcast",
 		},
 	}
-	got, err := weather.ParseForecastResponse(data)
+	got, err := site.ParseForecastResponse(data)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,25 +94,25 @@ func TestParseRegionForecastResponse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var want = []weather.RegionForecast{
-		weather.RegionForecast{
+	var want = []region.RegionForecast{
+		{
 			Title:   "Headline:",
 			Content: "Patchy fog clearing, then dry and bright for most.",
 		},
-		weather.RegionForecast{
+		{
 			Title:   "Today:",
 			Content: "Mostly cloudy in Cumbria at first with the odd spot of light rain. Elsewhere, patchy mist and fog clearing to leave a dry day with bright or sunny spells. Turning breezier than of late. Maximum Temperature 9C.",
 		},
-		weather.RegionForecast{
+		{
 			Title:   "Tonight:",
 			Content: "Cloud thickening this evening with a band of patchy rain moving south across the region. Skies clearing overnight, allowing a patchy frost to develop. Winds becoming generally light. Minimum Temperature 1C.",
 		},
-		weather.RegionForecast{
+		{
 			Title:   "Thursday:",
 			Content: "After a frosty start in places, it will be a dry and fine day with sunny periods. Brisk westerly winds, especially in northern areas. Maximum Temperature 8C.",
 		},
 	}
-	got, err := weather.ParseRegionForecastResponse(data)
+	got, err := region.ParseRegionForecastResponse(data)
 	if err != nil {
 		t.Fatal(err)
 	}
