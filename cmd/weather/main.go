@@ -1,7 +1,20 @@
 package main
 
-import "github.com/rwx-yxu/weather"
+import (
+	"os"
+
+	"github.com/rwx-yxu/weather/conf"
+	"github.com/spf13/cobra"
+)
 
 func main() {
-	weather.Cmd.Run()
+	var rootCmd = &cobra.Command{
+		Use:   "weather",
+		Short: "Weather cli",
+	}
+	//rootCmd.AddCommand(site.BaseCmd)
+	rootCmd.AddCommand(conf.BaseCmd)
+	if err := rootCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
 }
