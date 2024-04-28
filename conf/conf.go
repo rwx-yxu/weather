@@ -11,14 +11,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-/*
-type C struct {
-	apiKey   string `mapstructure:"apiKey"`
-	location string `mapstructure:"locationID"`
-	region   string `mapstructure: "regionID"`
-}
-*/
-
 var ErrorCannotResolvePath = errors.New("cannot resolve path")
 var ErrorConfigFileExists = errors.New("config file already exists")
 

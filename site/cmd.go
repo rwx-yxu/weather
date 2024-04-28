@@ -23,7 +23,7 @@ var listCmd = &cobra.Command{
 	Short:        `prints all met office site locations to standard output`,
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		APIKey := viper.GetString("APIKey")
+		APIKey := viper.GetString("apikey")
 		if APIKey == "" {
 			return errors.New("no api key set in .env file. Please run `weather conf init` to initialise conf file")
 		}
@@ -33,7 +33,7 @@ var listCmd = &cobra.Command{
 		}
 		fmt.Println("Available sites:")
 		for _, s := range sites {
-			fmt.Printf("Name: %s, Region: %s, Area: %s\n", s.Name, s.Name, s.Region, s.Area)
+			fmt.Printf("Name: %s, Region: %s, Area: %s\n", s.Name, s.Region, s.Area)
 		}
 		return nil
 	},
