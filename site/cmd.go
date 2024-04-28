@@ -3,6 +3,9 @@ package site
 import (
 	"errors"
 	"fmt"
+	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -31,10 +34,20 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println("Available sites:")
+		var out strings.Builder
+		out.WriteString("Available sites:\n")
 		for _, s := range sites {
-			fmt.Printf("Name: %s, Region: %s, Area: %s\n", s.Name, s.Region, s.Area)
+			out.WriteString(fmt.Sprintf("Name: %s, Region: %s, Area: %s\n", s.Name, s.Region, s.Area))
 		}
+		lessCmd := exec.Command("less")
+		lessCmd.Stdin = strings.NewReader(out.String())
+		lessCmd.Stdout = os.Stdout
+		lessCmd.Stderr = os.Stderr
+		err = lessCmd.Run()
+		if err != nil {
+			return err
+		}
+
 		return nil
 	},
 }
