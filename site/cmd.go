@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/huh"
+	"github.com/rwx-yxu/weather/region"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -92,7 +93,20 @@ var setCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		viper.Set("SiteID", selectedSite)
+		var regionID string
+		regions, err := region.GetList(APIKey)
+		if err != nil {
+			return err
+		}
+
+		for _, r := range regions {
+			if r.Name == sites[selectedSite].Region {
+				regionID = r.Id
+			}
+		}
+
+		viper.Set("LocationID", sites[selectedSite].Id)
+		viper.Set("RegionID", regionID)
 		err = viper.WriteConfig()
 		if err != nil {
 			return err
