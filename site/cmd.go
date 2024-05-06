@@ -92,8 +92,12 @@ var setCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-
-		fmt.Printf("Selected site: %d\n", selectedSite)
+		viper.Set("SiteID", selectedSite)
+		err = viper.WriteConfig()
+		if err != nil {
+			return err
+		}
+		fmt.Println("Site set")
 		return nil
 	},
 }
