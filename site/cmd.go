@@ -16,6 +16,7 @@ import (
 func init() {
 	BaseCmd.AddCommand(listCmd)
 	BaseCmd.AddCommand(setCmd)
+	BaseCmd.AddCommand(forecastCmd)
 }
 
 // sayCmd represents the say command
@@ -112,6 +113,49 @@ var setCmd = &cobra.Command{
 			return err
 		}
 		fmt.Println("Site set")
+		return nil
+	},
+}
+
+var forecastCmd = &cobra.Command{
+	Use:          `forecast`,
+	Short:        `returns the current days weather forecast`,
+	SilenceUsage: true,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		APIKey := viper.GetString("apikey")
+		if APIKey == "" {
+			return errors.New("no api key set in .env file. Please run `weather conf init` to initialise conf file")
+		}
+
+		siteID := viper.GetString("locationID")
+		if siteID == "" {
+			return errors.New("site id is not set. Please use the command 'weather site set' to find a specific location")
+		}
+		forecast, err := GetTodayForecast(APIKey, siteID)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Day %s°C - %s | Night %s °C - %s\n", forecast.Day.Temp, forecast.Day.Description, forecast.Night.Temp, forecast.Night.Description)
+		regionID := viper.GetString(`regionID`)
+		if regionID == "" {
+			return errors.New("region id is not set. Please use the command 'weather site set LOCATION' first. Or, use the command 'weather site find LOCATION' to find a specific location")
+		}
+
+		regionForecast, err := region.GetForecast(APIKey, regionID)
+		if err != nil {
+			return err
+		}
+		if len(regionForecast) == 0 {
+			return errors.New("no forecasts found for region")
+		}
+
+		for _, f := range regionForecast {
+			if f.Title != "Headline:" {
+				fmt.Printf("%v\n\n", f.Content)
+				continue
+			}
+			fmt.Printf("%v %v\n", f.Title, f.Content)
+		}
 		return nil
 	},
 }
