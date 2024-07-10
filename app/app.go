@@ -8,6 +8,8 @@ import (
 
 type Resource string
 
+const Name string = "weather"
+
 const (
 	SiteList            Resource = "sitelist"
 	RegionList          Resource = "regionlist"
